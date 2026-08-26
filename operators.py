@@ -842,17 +842,23 @@ class SMIRK_OT_modifier_add(bpy.types.Operator):
 
         # insert and change smirk_mod properties
         for item in interface.items_tree:
+
+           
+
             if item.item_type == 'PANEL':
                 continue
+            socket = getattr(smirk_mod.properties.inputs, item.identifier, None)
+            if socket is None:
+                continue
             # Mask
-            if item.identifier == 'Socket_4':
-                smirk_mod[f'{item.identifier}'] = self.mask_name
+            if item.identifier == CUTTER_MASK:
+                socket.value = self.mask_name
             # Object
             if item.identifier == OBJECT_SOCKET and item.bl_socket_idname == 'NodeSocketObject':
-                smirk_mod[f'{item.identifier}'] = op_props.cutter_obj
+                socket.value = op_props.cutter_obj
             # Shader Attribute
             if item.identifier == 'Socket_3':
-                smirk_mod[f'{item.identifier}'] = self.shader_att
+                socket.value = self.shader_att
 
         try:
             bpy.ops.smirk.sync_rim_mat(
@@ -864,7 +870,7 @@ class SMIRK_OT_modifier_add(bpy.types.Operator):
 
         bpy.ops.smirk.insert_nodetree(
         object_name = obj.name,
-        shader_mask = smirk_mod[SHADER_MASK]
+        shader_mask = getattr(smirk_mod.properties.inputs, SHADER_MASK).value
         )
             
             
@@ -924,14 +930,14 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
             return {'CANCELLED'}
         
         #cutter_obj
-        cutter_obj = gn_mod[OBJECT_SOCKET] or None
+        cutter_obj = getattr(gn_mod.properties.inputs, OBJECT_SOCKET, None).value or None
         
 
         # Remove Cutter Mask
         def _remove_cutter_mask(mod, obj):
             if obj == None:
                 return
-            cutter_mask = mod[CUTTER_MASK] or None
+            cutter_mask = getattr(mod.properties.inputs, CUTTER_MASK).value or None
             if cutter_mask == None:
                 return
             if obj.type == 'MESH':
@@ -998,7 +1004,7 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
 
 
         mat = obj.active_material
-        shader_attr = gn_mod.get(SHADER_MASK,"")
+        shader_attr = getattr(gn_mod.properties.inputs, SHADER_MASK).value
         if mat and shader_attr:
             _remove_shader_nodes(mat, shader_attr)
 
@@ -1084,10 +1090,10 @@ class SMIRK_OT_add_cutter_mask(bpy.types.Operator):
                         continue
                     # Layer
                     if item.identifier == 'Socket_2':
-                        ovrl_mod[f'{item.identifier}'] = cutter
+                        getattr(ovrl_mod.properties.inputs, item.identifier).value = cutter
                     # Material
                     if item.identifier == 'Socket_3':
-                        ovrl_mod[f'{item.identifier}'] = proxy_mat
+                        getattr(ovrl_mod.properties.inputs, item.identifier).value = proxy_mat
 
         
         
@@ -1111,8 +1117,10 @@ class SMIRK_OT_sync_rim_mat(bpy.types.Operator):
         except:
             return {"CANCELLED"}
 
+       
+
         try:
-            gn_mod[CUTTER_RIM_MAT] = mat
+            getattr(gn_mod.properties.inputs, CUTTER_RIM_MAT).value = mat
             self.report({'INFO'}, f"Cutter Rim now uses '{mat.name}' as Material.")
         except:
             self.report({'WARNING'}, f"Could not sync Material for Cutter Rim")
@@ -1272,7 +1280,7 @@ def get_smirk_object(context, wm=None):
                     continue
                 if any(mod.type == 'ARMATURE' and mod.object == obj for mod in meshobj.modifiers):
                     obj = meshobj
-                if any(mod.type == 'NODES' and mod.node_group and mod.node_group.name == SMIRK_MODIFIER and mod[OBJECT_SOCKET] == obj for mod in meshobj.modifiers):
+                if any(mod.type == 'NODES' and mod.node_group and mod.node_group.name == SMIRK_MODIFIER and getattr(mod.properties.inputs, OBJECT_SOCKET).value == obj for mod in meshobj.modifiers):
                     obj = meshobj
     return obj 
 
@@ -1292,22 +1300,20 @@ def smirk_prop_handler(scene, depsgraph):
     except:
         return
     
-    try:
-        current_mask = gn_mod.get(CUTTER_MASK)
-        current_cutter = gn_mod.get(OBJECT_SOCKET)
-        current_cutter_name = getattr(current_cutter, "name", "")
+    
+    current_mask = getattr(gn_mod.properties.inputs, CUTTER_MASK, None).value
+    current_cutter = getattr(gn_mod.properties.inputs, OBJECT_SOCKET, None).value
+    current_cutter_name = getattr(current_cutter, "name", "")
 
-        last_mask = gn_mod.get("_smirk_last_mask")
-        last_cutter_name = gn_mod.get("_smirk_last_cutter")
-    except:
-        return
-
+    last_mask = obj.get("_smirk_last_mask")
+    last_cutter_name = obj.get("_smirk_last_cutter")
+    
     changed = (current_mask != last_mask) or (current_cutter_name != last_cutter_name)
     if not changed:
         return
     try:
-        gn_mod["_smirk_last_mask"] = current_mask
-        gn_mod["_smirk_last_cutter"] = current_cutter_name
+        obj["_smirk_last_mask"] = current_mask
+        obj["_smirk_last_cutter"] = current_cutter_name
     except Exception:
         pass
 
@@ -1330,7 +1336,7 @@ def smirk_prop_handler(scene, depsgraph):
                 for item in interface.items_tree:
                     # Layer
                     if item.identifier == 'Socket_2':
-                        ovrl_mod[f'{item.identifier}'] = current_mask
+                        getattr(ovrl_mod.properties.inputs, item.identifier).value = current_mask
 
         except Exception:
             pass

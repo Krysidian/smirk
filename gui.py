@@ -19,14 +19,14 @@ class SMIRK_sync_props(bpy.types.PropertyGroup):
     def _get_cutter_mask(self) -> None:
         obj, gn_mod = get_smirk_obj_and_modifier(bpy.context)
 
-        return gn_mod.get(CUTTER_MASK, "")
+        return getattr(gn_mod.properties.inputs, CUTTER_MASK).value
     
     def _set_cutter_mask(self, value: str) -> None:
         obj, gn_mod = get_smirk_obj_and_modifier(bpy.context)
-        old = gn_mod[CUTTER_MASK]
+        old = getattr(gn_mod.properties.inputs, CUTTER_MASK).value
         new = value
-        gn_mod[CUTTER_MASK] = new
-        cutter_obj = gn_mod[OBJECT_SOCKET]
+        getattr(gn_mod.properties.inputs, CUTTER_MASK).value = new
+        cutter_obj = getattr(gn_mod.properties.inputs, OBJECT_SOCKET).value
 
         if cutter_obj is None or cutter_obj.type != 'MESH' and cutter_obj.type != 'GREASEPENCIL':
             return 
@@ -49,8 +49,8 @@ class SMIRK_sync_props(bpy.types.PropertyGroup):
                         continue
                     if item.bl_socket_idname not in {'NodeSocketString', 'NodeSocketBool'}:
                         continue
-                    if mod[item.identifier] == old:
-                        mod[item.identifier] = new
+                    if getattr(mod.properties.inputs, item.identifier).value == old:
+                        getattr(mod.properties.inputs, item.identifier).value = new
                 
             # Regular Modifiers
             else:
@@ -83,14 +83,14 @@ class SMIRK_sync_props(bpy.types.PropertyGroup):
     def _get_shader_attr(self) -> None:
         obj, gn_mod = get_smirk_obj_and_modifier(bpy.context)
 
-        return gn_mod.get(SHADER_MASK, "")
+        return getattr(gn_mod.properties.inputs, SHADER_MASK).value
     
     def _set_shader_attr(self, value: str) -> None:
         obj, gn_mod = get_smirk_obj_and_modifier(bpy.context)
-        old = gn_mod[SHADER_MASK]
+        old = getattr(gn_mod.properties.inputs, SHADER_MASK).value
         new = value
-        gn_mod[SHADER_MASK] = new
-        cutter_obj = gn_mod[OBJECT_SOCKET]
+        getattr(gn_mod.properties.inputs, SHADER_MASK).value = new
+        cutter_obj = getattr(gn_mod.properties.inputs, OBJECT_SOCKET).value
 
         mat = obj.active_material
 
@@ -142,7 +142,7 @@ class SMIRK_MT_modifiers(bpy.types.Menu):
 
         
         op = layout.operator("smirk.insert_nodetree", icon='NODE_INSERT_OFF')
-        shader_mask = gn_mod[SHADER_MASK]
+        shader_mask = getattr(gn_mod.properties.inputs, SHADER_MASK).value
         op.object_name = obj.name
         op.shader_mask = shader_mask
         op = layout.operator("smirk.sync_rim_mat", icon='MATERIAL')
@@ -353,7 +353,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
             prop_panel_header.label(text = 'Properties', icon='PROPERTIES')
             if prop_panel_body:
                 row = prop_panel_body.row()
-                row.prop(gn_mod, f'["{OBJECT_SOCKET}"]', text='Cutter Object', emboss=True, icon='GEOMETRY_NODES', placeholder="Cutter Object")
+                row.prop(getattr(gn_mod.properties.inputs, OBJECT_SOCKET), 'value', text='Cutter Object', emboss=True, icon='GEOMETRY_NODES', placeholder="Cutter Object")
                 row = prop_panel_body.row()
                 row.prop(context.scene.smirk_sync_props, 'cutter_mask', text='Cutter Mask', emboss=True, icon='GEOMETRY_NODES', placeholder="Cutter Mask")
                 row = prop_panel_body.row()
@@ -374,13 +374,13 @@ class SMIRK_PT_menu(bpy.types.Panel):
 
         # Cutter Object Settings
 
-        if gn_mod[OBJECT_SOCKET] == None:
+        if getattr(gn_mod.properties.inputs, OBJECT_SOCKET).value == None:
             row = layout.row()
             row.alert = True
             row.label(text='No Cutter Object selected yet')
             
         try:
-            cutter_obj = gn_mod[OBJECT_SOCKET]
+            cutter_obj = getattr(gn_mod.properties.inputs, OBJECT_SOCKET).value
         except:
             cutter_obj = None
 
@@ -463,7 +463,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
                 
                 op = body.operator("smirk.add_cutter_mask", icon=op_icon, text=op_text)
                 op.object_name = cutter_obj.name
-                cutter_name = gn_mod[CUTTER_MASK]
+                cutter_name = getattr(gn_mod.properties.inputs, CUTTER_MASK).value
                 op.cutter_name = cutter_name
 
                 if cutter_obj.type == 'GREASEPENCIL' and cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL):
@@ -500,7 +500,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
             row.column().label(text= 'Cutter Object:')
             
             try:
-                cutter_name = gn_mod[OBJECT_SOCKET].name
+                cutter_name = getattr(gn_mod.properties.inputs, OBJECT_SOCKET).value.name
                 row.column().label(text= cutter_name)
             except:
                 row.alert = True
@@ -509,8 +509,8 @@ class SMIRK_PT_menu(bpy.types.Panel):
             row = body.column_flow(columns=2)
             row.column().label(text= 'Mask:')
 
-            if gn_mod[CUTTER_MASK] != "":
-                att_name = gn_mod[CUTTER_MASK]
+            if getattr(gn_mod.properties.inputs, CUTTER_MASK).value != "":
+                att_name = getattr(gn_mod.properties.inputs, CUTTER_MASK).value
                 row.column().label(text= att_name)
             else:
                 row.alert = True
@@ -519,8 +519,8 @@ class SMIRK_PT_menu(bpy.types.Panel):
             row = body.column_flow(columns=2)
             row.column().label(text= 'Shader Attribute:')
 
-            if gn_mod[SHADER_MASK] != "":
-                att_name = gn_mod[SHADER_MASK]
+            if getattr(gn_mod.properties.inputs, SHADER_MASK).value != "":
+                att_name = getattr(gn_mod.properties.inputs, SHADER_MASK).value
                 row.column().label(text= att_name)
             else:
                 row.alert = True
@@ -547,10 +547,9 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
 
     current_mode = None
     try:
-        current_mode = gn_mod.get(MODIFIER_MODE)
+        current_mode = getattr(gn_mod.properties.inputs, MODIFIER_MODE).value
     except Exception:
         current_mode = None
-
 
     if gn_mod.type == 'NODES':
 
@@ -600,7 +599,7 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
 
                 # Complex Only Panels
                 if item.item_type == 'PANEL' and item.name in complex_only_panels:
-                    if current_mode == 0:
+                    if current_mode == 'Simple':
                         panel_state.expanded = False
                         continue
                     elif complex_separator_drawn == False:
@@ -614,6 +613,19 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
                     
                 # Modifier Panels
                 if item.item_type == 'PANEL' and parent_panel_open:
+
+                    # Skip invisible panels
+                    panel_sockets = [
+                        socket for socket in interface.items_tree
+                            if socket.item_type == 'SOCKET' 
+                            and socket.in_out == 'INPUT'
+                            and socket.parent == item
+                    ]
+                    has_visible_sockets = any(
+                        gn_mod.is_input_visible(socket.identifier) for socket in panel_sockets
+                    )
+                    if not has_visible_sockets:
+                        continue
                     
                     parent = item.parent.name
                     # Nested if parent exists, else new box
@@ -642,7 +654,8 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
                         if socket.is_panel_toggle == False:
                             continue
                         if socket.parent == item:
-                            row.prop(gn_mod, f'["{socket.identifier}"]', emboss=False, icon_only=True, icon='CHECKBOX_HLT' if gn_mod[socket.identifier] == True else 'CHECKBOX_DEHLT')
+                            socket_prop = getattr(gn_mod.properties.inputs, socket.identifier, None)
+                            row.prop(socket_prop, "value", emboss=False, icon_only=True, icon='CHECKBOX_HLT' if getattr(gn_mod.properties.inputs, socket.identifier).value == True else 'CHECKBOX_DEHLT')
                     row.label(text=item.name)
                     panel_box_map[item.name] = current_box
 
@@ -658,7 +671,8 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
                     socket_name= item.name.removeprefix(item.parent.name)
 
                     # Make sure the socket_id can be drawn
-                    if socket_id in gn_mod.keys():
+                    socket_prop = getattr(gn_mod.properties.inputs, socket_id, None)
+                    if socket_prop is not None:
                         # Use the panel box if exists, else top-level
                         parent_box = panel_box_map.get(item.parent.name, body)
                         target = parent_box.row()
@@ -675,16 +689,29 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
 
 
                         try:
-                            target.prop(gn_mod, f'["{item.identifier}"]', text=socket_name, expand = expand)
+                            socket_prop = getattr(gn_mod.properties.inputs, item.identifier, None)
+
+                            # Hide invisible sockets
+                            if gn_mod.is_input_visible(item.identifier) == False:
+                                continue
+                            
+                            prop = target.prop(socket_prop, 'value', text=socket_name, expand = expand)
+
+                            # grey out unused sockets
+                            if gn_mod.is_input_used(item.identifier):
+                                target.enabled = True
+                            else:
+                                target.enabled = False
                             # Optional Icons
                             
+
                             if socket_name in socket_icons:
                                 if socket_icons[item.name] in _BUILTIN_LABEL_ICONS:
                                     target.label(text='', icon=socket_icons[socket_name])
                                 else:
                                     target.label(text='', icon_value=get_icon(socket_icons[socket_name]))
                         except: 
-                            return
+                            continue
                     
 
 

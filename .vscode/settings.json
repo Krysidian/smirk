@@ -1,11 +1,19 @@
 {
-  "python.analysis.diagnosticSeverityOverrides": {
-    "reportOptionalMemberAccess": "none",
-    "reportGeneralTypeIssues": "none",
-    "reportAttributeAccessIssue": "none"
-  },
-  "blender.executables": [
-  
-],
-"blender.environmentVariables": {}
+    "python.analysis.typeCheckingMode": "standard",
+    "blender.executables": [
+
+        {
+            "name": "",
+            "path": "d:\\Workspace\\Blender\\Detatched Facial Features\\smirk_addon_dev\\Blender_5.2_addon_dev\\blender.exe",
+            "isDefault": true
+        }
+    ],
+    "chat.viewSessions.orientation": "stacked",
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "blender.addon.reloadOnSave": true
 }
