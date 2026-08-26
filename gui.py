@@ -486,11 +486,23 @@ class SMIRK_PT_menu(bpy.types.Panel):
                 op.proxy_name = f'PROXY-{obj.name}'
         
         # Info Panel
+        warnings = list(getattr(gn_mod, "node_warnings"))
 
-        
+        info_text = 'Info'
+
+        if warnings:
+            info_text = f'Info ({len(warnings)})'
+
+            error_count = sum(w.type == 'ERROR' for w in warnings)
+            warning_count = sum(w.type == 'WARNING' for w in warnings)
+            info_count = sum(w.type == 'INFO' for w in warnings)
+                
         layout.separator(type='LINE',factor=MAIN_SEP_FACTOR)
         header, body = layout.panel(idname='smirk_info', default_closed=True)
-        header.label(text="Info", icon='INFO')
+        header.label(text=info_text, icon='STATUS_WARNING_FILLED' if warnings else 'INFO')
+        
+        header.alert = bool(warnings)
+        
         if body:
             row = body.column_flow(columns=2)
             row.column().label(text= 'Surface Object:')
@@ -525,6 +537,41 @@ class SMIRK_PT_menu(bpy.types.Panel):
             else:
                 row.alert = True
                 row.column().label(text= "No Attribute")
+
+            # Show Warnings
+            if not warnings:
+                return
+
+            label_parts = []
+
+            if error_count:
+                label_parts.append(f"Errors ({error_count})")
+            if warning_count:
+                label_parts.append(f"Warnings ({warning_count})")
+            if info_count:
+                label_parts.append(f"Info ({info_count})")
+
+            label_text = ", ".join(label_parts)
+            
+            body.separator(type='LINE',factor=MAIN_SEP_FACTOR)
+            row = body.row()
+            row.label(text=label_text)
+            for w in warnings:
+                message = w.message
+                icon = 'INFO'
+                match w.type:
+                    case 'ERROR':
+                        icon = 'CANCEL'
+                    case 'WARNING':
+                        icon = 'STATUS_WARNING_FILLED'
+                    case 'INFO':
+                        icon = 'INFO'
+                row = body.row()
+                if w.type == 'ERROR':
+                    row.alert = True
+                row.label(text=message, icon=icon)
+
+            
         
         
         
