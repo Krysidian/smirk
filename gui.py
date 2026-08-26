@@ -216,6 +216,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = 'SMIRK'
+    bl_icon = 'NONE'
 
 
     def draw(self, context):
@@ -715,15 +716,29 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
                     socket_id = item.identifier
 
                     #remove panel prefix the way Blender does it for Socket names natively
-                    socket_name= item.name.removeprefix(item.parent.name)
+                    socket_name= item.name.removeprefix(item.parent.name).strip()
 
                     # Make sure the socket_id can be drawn
                     socket_prop = getattr(gn_mod.properties.inputs, socket_id, None)
                     if socket_prop is not None:
                         # Use the panel box if exists, else top-level
                         parent_box = panel_box_map.get(item.parent.name, body)
-                        target = parent_box.row()
-                        
+
+                        # Viewport/Render column
+                        socket_button = True if socket_name == 'Viewport' or socket_name == 'Render' else False
+                        if socket_name == 'Viewport':
+                            target = parent_box.column()
+                            target = target.row(heading='Visibility', align=True)
+                            target.alignment = 'EXPAND'
+                        elif socket_name == 'Render':
+                            if target:
+                                target = target.row(align=True)
+                                target.alignment = 'EXPAND'
+                        else:
+                            target = parent_box.row()
+
+
+    
                         if item.is_panel_toggle:
                             
                             continue
@@ -741,8 +756,11 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
                             # Hide invisible sockets
                             if gn_mod.is_input_visible(item.identifier) == False:
                                 continue
+
                             
-                            prop = target.prop(socket_prop, 'value', text=socket_name, expand = expand)
+                            # Create Socket Prop
+                            target.use_property_decorate = False
+                            prop = target.prop(socket_prop, 'value', text=socket_name, expand=expand, toggle=socket_button)
 
                             # grey out unused sockets
                             if gn_mod.is_input_used(item.identifier):
