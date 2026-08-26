@@ -631,6 +631,7 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
             panel_box_map = {}
             
             complex_separator_drawn = False
+            visibility_row = None
             for item in interface.items_tree:
 
                 
@@ -727,8 +728,7 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
                         # Viewport/Render column
                         socket_button = True if socket_name == 'Viewport' or socket_name == 'Render' else False
                         if socket_name == 'Viewport':
-                            target = parent_box.column()
-                            target = target.row(heading='Visibility', align=True)
+                            target = parent_box.row(heading='Visibility', align=True)
                             target.alignment = 'EXPAND'
                         elif socket_name == 'Render':
                             if target:
