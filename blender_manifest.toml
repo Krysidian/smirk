@@ -4,7 +4,7 @@ schema_version = "1.0.0"
 # Change the values according to your extension
 id = "smirk"
 version = "0.2.0"
-name = "Smirk"
+name = "SMIRK"
 tagline = "Dynamically carve Facial Features into a mesh"
 maintainer = "Krysidian"
 # Supported types: "add-on", "theme"
