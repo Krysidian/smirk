@@ -663,6 +663,8 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
                 # Modifier Panels
                 if item.item_type == 'PANEL' and parent_panel_open:
 
+                    visibility_row = None
+
                     # Skip invisible panels
                     panel_sockets = [
                         socket for socket in interface.items_tree
@@ -726,14 +728,19 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
                         parent_box = panel_box_map.get(item.parent.name, body)
 
                         # Viewport/Render column
-                        socket_button = True if socket_name == 'Viewport' or socket_name == 'Render' else False
                         if socket_name == 'Viewport':
-                            target = parent_box.row(heading='Visibility', align=True)
-                            target.alignment = 'EXPAND'
+
+                            visiblity_icon = 'RESTRICT_VIEW_OFF' if getattr(gn_mod.properties.inputs, socket_id).value else 'RESTRICT_VIEW_ON'
+
+                            visibility_row = parent_box.row(align=True)
+                            visibility_row.alignment = 'RIGHT'
+                            target = visibility_row
                         elif socket_name == 'Render':
-                            if target:
-                                target = target.row(align=True)
-                                target.alignment = 'EXPAND'
+
+                            visiblity_icon = 'RESTRICT_RENDER_OFF' if getattr(gn_mod.properties.inputs, socket_id).value else 'RESTRICT_RENDER_ON'
+
+                            # Reuse row created for Viewport
+                            target = visibility_row
                         else:
                             target = parent_box.row()
 
@@ -759,8 +766,12 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
 
                             
                             # Create Socket Prop
-                            target.use_property_decorate = False
-                            prop = target.prop(socket_prop, 'value', text=socket_name, expand=expand, toggle=socket_button)
+                            if socket_name in {'Viewport', 'Render'}:
+                                target.use_property_decorate = False
+                                prop = target.prop(socket_prop, 'value', text='', icon=visiblity_icon, icon_only=True, toggle=True)
+                            else:
+                                target.use_property_decorate = True
+                                prop = target.prop(socket_prop, 'value', text=socket_name, expand=expand)
 
                             # grey out unused sockets
                             if gn_mod.is_input_used(item.identifier):
