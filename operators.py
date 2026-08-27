@@ -26,6 +26,8 @@ CUTTER_RIM_MAT = 'Socket_25'
 
 MAIN_SEP_FACTOR = 0.2
 
+SHRINKWRAP_NAME = 'SMIRK Shrinkwrap'
+
 
 def get_smirk_obj_and_modifier(context):
     wm = context.window_manager
@@ -756,7 +758,46 @@ class SMIRK_OT_goto_surface_obj(bpy.types.Operator):
             proxy.display_type = 'BOUNDS'
             proxy.show_in_front = False
 
+class SMIRK_OT_add_shrinkwrap(bpy.types.Operator):
+    bl_idname = 'smirk.add_shrinkwrap'
+    bl_label = 'Add Shrinkwrap to Cutter'
+    bl_description = 'Adds the Shrinkwrap modifier to the Cutter Object'
+    bl_options = {"UNDO"}
 
+    cutter_name: bpy.props.StringProperty()
+    proxy_name: bpy.props.StringProperty()
+
+    def execute(self, context):
+        context.view_layer.depsgraph.update()
+        cutter_obj = bpy.data.objects.get(self.cutter_name)
+        proxy = bpy.data.objects.get(self.proxy_name)
+
+        if not cutter_obj:
+            return {'CANCELLED'}
+        if not proxy:
+            self.report({'ERROR'}, f"Proxy Object Needed")
+            return {'CANCELLED'}
+        
+
+        
+        # Add Shrinkwrap
+        if not bool(cutter_obj.modifiers.get(SHRINKWRAP_NAME)):
+            shrinkwrap = None
+            if cutter_obj.type == 'GREASEPENCIL':
+                shrinkwrap = cutter_obj.modifiers.new(SHRINKWRAP_NAME, type='GREASE_PENCIL_SHRINKWRAP')
+            elif cutter_obj.type == 'MESH':
+                shrinkwrap = cutter_obj.modifiers.new(SHRINKWRAP_NAME, type='SHRINKWRAP')
+
+            if not shrinkwrap:
+                return {'CANCELLED'}
+
+            shrinkwrap.wrap_mode = 'ABOVE_SURFACE'
+            shrinkwrap.target = proxy
+            shrinkwrap.offset = 0.0001
+        else:
+             self.report({'WARNING'}, f"'{SHRINKWRAP_NAME}' already exists on '{self.cutter_name}'")
+
+        self.report({'INFO'}, f"'{SHRINKWRAP_NAME}' added to {cutter_obj.name}")
 
         return {'FINISHED'}
 
@@ -933,19 +974,23 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
 
         
 
-        #obj
+        # obj
         obj = bpy.data.objects.get(self.object_name)
         if obj == None:
             self.report({'WARNING'}, f"Object '{self.object}' not found")
             return {'CANCELLED'}
-        #gn_mod
+        # gn_mod
         gn_mod = obj.modifiers.get(self.modifier_name)
         if gn_mod is None:
             self.report({'WARNING'}, f"Modifier '{self.modifier}' not found")
             return {'CANCELLED'}
         
-        #cutter_obj
+        
+        # cutter_obj
         cutter_obj = getattr(gn_mod.properties.inputs, OBJECT_SOCKET, None).value or None
+
+        # Shrinkwrap
+        shrinkwrap = cutter_obj.modifiers.get(SHRINKWRAP_NAME)
         
 
         # Remove Cutter Mask
@@ -975,10 +1020,11 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
             mods = getattr(cutter_obj, "modifiers", None)
             if not mods:
                 return
+            cutter_obj.modifiers.remove(shrinkwrap)
             for m in mods:
                 if m.type == 'NODES':
                     if m.node_group.name != OVERRIDE_LAYER_MATERIAL:
-                        return
+                        continue
                     cutter_obj.modifiers.remove(m)
         _remove_cutter_mods(cutter_obj)
 
@@ -1065,7 +1111,7 @@ class SMIRK_OT_add_cutter_mask(bpy.types.Operator):
         if obj.type == 'MESH' and obj.vertex_groups.get(cutter) is None:
             obj.vertex_groups.new(name=cutter)
         elif obj.type == 'MESH':
-            self.report({'WARNING'}, f"'{cutter}' Vertex Group already exists on '{obj.name}'")
+            self.report({'WARNING'}, f"'{cutter}' Vertex Group already exists on {obj.name}")
 
         if obj.type == 'GREASEPENCIL':
             layers = obj.data.layers
@@ -1075,7 +1121,7 @@ class SMIRK_OT_add_cutter_mask(bpy.types.Operator):
                 layers.move_bottom(layer)
 
             else:
-                self.report({'WARNING'}, f"'{cutter}' Layer already exists on '{obj.name}'")
+                self.report({'WARNING'}, f"'{cutter}' Layer already exists on {obj.name}")
             
             try:
                 proxy_mat = get_asset_material(GP_CUTTER_MAT)
@@ -1111,8 +1157,10 @@ class SMIRK_OT_add_cutter_mask(bpy.types.Operator):
                         getattr(ovrl_mod.properties.inputs, item.identifier).value = proxy_mat
 
         
-        
-
+        if obj.type == 'GREASEPENCIL':
+            self.report({'INFO'}, f"'{cutter}' Layer added for {obj.name}")
+        if obj.type == 'MESH':
+            self.report({'INFO'}, f"'{cutter}' Vertex Group added for {obj.name}")
         return {"FINISHED"}
 
 class SMIRK_OT_sync_rim_mat(bpy.types.Operator):
@@ -1372,6 +1420,7 @@ _classes = (
     SMIRK_OT_sync_rim_mat,
     SMIRK_OT_edit_cutter_obj,
     SMIRK_OT_goto_surface_obj,
+    SMIRK_OT_add_shrinkwrap,
     SMIRK_OT_toggle_gp_cutter_visibility,
     SMIRK_OT_setup_remove,
     SMIRK_OT_fix_dependency_loop,

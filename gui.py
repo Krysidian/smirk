@@ -461,12 +461,30 @@ class SMIRK_PT_menu(bpy.types.Panel):
                     op.object_name = obj.name
 
                     body.separator(factor=1.0)
-                
-                op = body.operator("smirk.add_cutter_mask", icon=op_icon, text=op_text)
-                op.object_name = cutter_obj.name
-                cutter_name = getattr(gn_mod.properties.inputs, CUTTER_MASK).value
-                op.cutter_name = cutter_name
 
+                cutter_name = getattr(gn_mod.properties.inputs, CUTTER_MASK).value
+
+                # Show add Cutter Mask button if it hasn't been added yet
+                cutter_mask_exists = False
+                if cutter_obj.type == 'GREASEPENCIL':
+                    cutter_mask_exists = bool(cutter_obj.data.layers.get(cutter_name))
+                elif cutter_obj.type == 'MESH':
+                    cutter_mask_exists = bool(cutter_obj.vertex_groups.get(cutter_name))
+
+                if not cutter_mask_exists:
+                    op = body.operator("smirk.add_cutter_mask", icon=op_icon, text=op_text)
+                    op.object_name = cutter_obj.name
+                    op.cutter_name = cutter_name
+
+                # Show Shrinkwrap Add button if it doesn't exist yet
+                if not bool(cutter_obj.modifiers.get(SHRINKWRAP_NAME)):
+                    row = body.row()
+                    row.enabled = not bool(cutter_obj.modifiers.get(SHRINKWRAP_NAME))
+                    op = row.operator("smirk.add_shrinkwrap", icon='MOD_SHRINKWRAP')
+                    op.proxy_name = f'PROXY-{obj.name}'
+                    op.cutter_name = cutter_obj.name
+
+                # Show Make Cutter Invisible option if cutter object is Grease Pencil
                 if cutter_obj.type == 'GREASEPENCIL' and cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL):
                     cutter_mod = cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL)
                     row = body.row(align=True)
@@ -480,6 +498,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
                 op.object_name = obj.name
                 op.cutter_name = cutter_obj.name
                 op.proxy_name = f'PROXY-{obj.name}'
+
 
                 op = row.operator("smirk.goto_surface_object", icon='OUTLINER_OB_SURFACE')
                 op.object_name = obj.name
