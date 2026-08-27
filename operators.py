@@ -833,6 +833,17 @@ class SMIRK_OT_modifier_add(bpy.types.Operator):
         
         obj = bpy.data.objects.get(self.object_name) if self.object_name else context.active_object
 
+        if not self.modifier_name:
+            self.report({'ERROR'}, f"Modifier field must be filled")
+            return {"FINISHED"}
+        if not self.mask_name:
+                    self.report({'ERROR'}, f"Mask field must be filled")
+                    return {"FINISHED"}
+        if not self.shader_att:
+                    self.report({'ERROR'}, f"Shader Attribute field must be filled")
+                    return {"FINISHED"}
+        
+
         if obj.name.startswith('PROXY-'):
             self.report({'ERROR'}, f"Cannot add SMIRK Modifier to Proxy Object")
             return {"FINISHED"}
