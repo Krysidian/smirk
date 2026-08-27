@@ -758,6 +758,8 @@ class SMIRK_OT_goto_surface_obj(bpy.types.Operator):
             proxy.display_type = 'BOUNDS'
             proxy.show_in_front = False
 
+        return {'FINISHED'}
+
 class SMIRK_OT_add_shrinkwrap(bpy.types.Operator):
     bl_idname = 'smirk.add_shrinkwrap'
     bl_label = 'Add Shrinkwrap to Cutter'
@@ -1020,7 +1022,8 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
             mods = getattr(cutter_obj, "modifiers", None)
             if not mods:
                 return
-            cutter_obj.modifiers.remove(shrinkwrap)
+            if shrinkwrap:
+                cutter_obj.modifiers.remove(shrinkwrap)
             for m in mods:
                 if m.type == 'NODES':
                     if m.node_group.name != OVERRIDE_LAYER_MATERIAL:
