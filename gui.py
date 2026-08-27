@@ -403,7 +403,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
                     if item.bl_socket_idname != 'NodeSocketObject':
                         continue
                     key = item.identifier
-                    if mod.get(key) == obj:
+                    if getattr(mod.properties.inputs, key).value == obj:
                         dep_cycle = True
             else:
                 for prop in mod.bl_rna.properties:
@@ -769,6 +769,9 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
                             if socket_name in {'Viewport', 'Render'}:
                                 target.use_property_decorate = False
                                 prop = target.prop(socket_prop, 'value', text='', icon=visiblity_icon, icon_only=True, toggle=True)
+                            elif socket_name == 'Exclusion Mask':
+                                target.use_property_decorate = True
+                                prop = target.prop(socket_prop, 'attribute_name', text=socket_name, expand=expand)
                             else:
                                 target.use_property_decorate = True
                                 prop = target.prop(socket_prop, 'value', text=socket_name, expand=expand)
