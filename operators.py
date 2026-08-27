@@ -694,6 +694,8 @@ class SMIRK_OT_edit_cutter_obj(bpy.types.Operator):
         
 
         # Make Cutter Object active, deselect everything else and select surface object
+        cutter_obj.hide_viewport = False
+        cutter_obj.hide_set(False)
         context.view_layer.objects.active = cutter_obj
         for ob in bpy.data.objects:
             ob.select_set(False)
@@ -739,6 +741,8 @@ class SMIRK_OT_goto_surface_obj(bpy.types.Operator):
         
 
         # Make Cutter Object active, deselect everything else and select surface object
+        obj.hide_viewport = False
+        obj.hide_set(False)
         for ob in bpy.data.objects:
             ob.select_set(False)
         obj.select_set(True)
@@ -1300,7 +1304,8 @@ def smirk_prop_handler(scene, depsgraph):
     except:
         return
     
-    
+    if not gn_mod:
+        return
     current_mask = getattr(gn_mod.properties.inputs, CUTTER_MASK, None).value
     current_cutter = getattr(gn_mod.properties.inputs, OBJECT_SOCKET, None).value
     current_cutter_name = getattr(current_cutter, "name", "")
