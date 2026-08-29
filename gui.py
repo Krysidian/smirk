@@ -386,40 +386,41 @@ class SMIRK_PT_menu(bpy.types.Panel):
             cutter_obj = None
 
 
-        # Dependency Loop Check
-        dep_cycle = False
-        for mod in cutter_obj.modifiers:
-            
-            if mod.type == 'NODES':
-                try:
-                    interface = mod.node_group.interface
-                except:
-                    interface = None
-                if not interface:
-                    continue
-                for item in interface.items_tree:
-                    if item.item_type != 'SOCKET':
-                        continue
-                    if item.bl_socket_idname != 'NodeSocketObject':
-                        continue
-                    key = item.identifier
-                    if getattr(mod.properties.inputs, key).value == obj:
-                        dep_cycle = True
-            else:
-                for prop in mod.bl_rna.properties:
-                    if prop.is_readonly:
-                        continue
-                    if prop.type != 'POINTER':
-                        continue
-                    try:
-                        pointer_name = prop.identifier
-                        pointer = getattr(mod, pointer_name)
-                        if pointer is obj:
-                            dep_cycle = True
-                    except:
-                        continue
+        
 
         if cutter_obj:
+            # Dependency Loop Check
+            dep_cycle = False
+            for mod in cutter_obj.modifiers:
+                
+                if mod.type == 'NODES':
+                    try:
+                        interface = mod.node_group.interface
+                    except:
+                        interface = None
+                    if not interface:
+                        continue
+                    for item in interface.items_tree:
+                        if item.item_type != 'SOCKET':
+                            continue
+                        if item.bl_socket_idname != 'NodeSocketObject':
+                            continue
+                        key = item.identifier
+                        if getattr(mod.properties.inputs, key).value == obj:
+                            dep_cycle = True
+                else:
+                    for prop in mod.bl_rna.properties:
+                        if prop.is_readonly:
+                            continue
+                        if prop.type != 'POINTER':
+                            continue
+                        try:
+                            pointer_name = prop.identifier
+                            pointer = getattr(mod, pointer_name)
+                            if pointer is obj:
+                                dep_cycle = True
+                        except:
+                            continue
         
             layout.separator(type='SPACE',factor=MAIN_SEP_FACTOR)
             if cutter_obj.type == 'MESH':
@@ -619,7 +620,7 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
         current_mode = None
 
     if gn_mod.type == 'NODES':
-
+        
         def _builtin_icon_names_for_label() -> set[str]:
             """Return the enum identifiers accepted by row.label(icon=...)."""
             try:
@@ -778,6 +779,10 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
 
                         try:
                             socket_prop = getattr(gn_mod.properties.inputs, item.identifier, None)
+
+                            # skip Socket_0
+                            if item.identifier == 'Socket_0':
+                                continue
 
                             # Hide invisible sockets
                             if gn_mod.is_input_visible(item.identifier) == False:

@@ -811,7 +811,11 @@ class SMIRK_OT_modifier_add(bpy.types.Operator):
     bl_label = "Add Smirk Modifier"
     bl_description = "Create a linked duplicate of the selected Object that will be used as a target for certain modifiers"
     bl_options = {'UNDO'}
-    object_name: bpy.props.StringProperty(name='Target Object', default='')
+
+    object_name: bpy.props.StringProperty(
+        name='Target Object', 
+        default=''
+    )
 
     modifier_name: bpy.props.StringProperty(
         name='Modifier Name',
@@ -967,12 +971,25 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
     bl_idname = 'smirk.setup_remove'
     bl_label = 'Remove current SMIRK setup'
     bl_description = 'Remove modifier and all related data from this and related objects'
+    bl_options = {'REGISTER', 'UNDO'}
 
     object_name: bpy.props.StringProperty()
     modifier_name: bpy.props.StringProperty()
 
+    remove_cutter: bpy.props.BoolProperty(
+            name='Remove Cutter Layer/Vertex Group',
+            description='Deletes the Vertex Group or Grease Pencil layer used to define the cutter.',
+            default=True
+        )
+
     def invoke(self, context, event):
         return context.window_manager.invoke_confirm(self, event)
+    
+    def draw(self, context):
+            
+            layout = self.layout
+
+            layout.prop(self, 'remove_cutter')
 
     def execute(self, context):
 
@@ -995,7 +1012,8 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
         cutter_obj = getattr(gn_mod.properties.inputs, OBJECT_SOCKET, None).value or None
 
         # Shrinkwrap
-        shrinkwrap = cutter_obj.modifiers.get(SHRINKWRAP_NAME)
+        if cutter_obj:
+            shrinkwrap = cutter_obj.modifiers.get(SHRINKWRAP_NAME) or None
         
 
         # Remove Cutter Mask
@@ -1017,7 +1035,8 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
                     return
                 layers.remove(layer)
 
-        _remove_cutter_mask(gn_mod, cutter_obj)
+        if self.remove_cutter == True:
+            _remove_cutter_mask(gn_mod, cutter_obj)
 
 
         # Remove Cutter Object Modifiers
@@ -1081,6 +1100,8 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
         
 
         return {'FINISHED'}
+
+
 
 
 class SMIRK_OT_switch_tab(bpy.types.Operator):
