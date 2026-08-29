@@ -977,7 +977,7 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
     modifier_name: bpy.props.StringProperty()
 
     remove_cutter: bpy.props.BoolProperty(
-            name='Remove Cutter Layer/Vertex Group',
+            name='Remove Cutter Mask',
             description='Deletes the Vertex Group or Grease Pencil layer used to define the cutter.',
             default=True
         )
@@ -986,10 +986,9 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
         return context.window_manager.invoke_confirm(self, event)
     
     def draw(self, context):
-            
-            layout = self.layout
-
-            layout.prop(self, 'remove_cutter')
+        layout = self.layout
+        
+        prop = layout.prop(self, 'remove_cutter')
 
     def execute(self, context):
 
@@ -1057,7 +1056,12 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
         def _remove_shader_nodes(mat, shader_attr):
             nodes = mat.node_tree.nodes
             links = mat.node_tree.links
-            for node in nodes:
+            if not nodes:
+                return
+            if not links:
+                return
+            to_remove = []
+            for node in list(nodes):
                 if node.bl_idname != 'ShaderNodeGroup':
                     continue
                 if node.node_tree.name != TRANSPARENCY_MASK:
@@ -1069,27 +1073,28 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
                 out_shader = node.outputs.get("Shader")
                 lnk = mask.links[0] if mask.is_linked else None
                 attr_node = getattr(lnk, "from_node", None)
-                if attr_node or getattr(attr_node, "bl_idname", "") == "ShaderNodeAttribute":
+                if attr_node and getattr(attr_node, "bl_idname", "") == "ShaderNodeAttribute":
                     if attr_node.attribute_name == shader_attr:
                         is_linked = mask.is_linked
                         if is_linked == False:
-                            nodes.remove(attr_node)
-                            nodes.remove(node)
+                            to_remove.append(attr_node)
+                            to_remove.append(node)
                             return
                         incoming_links = list(getattr(in_shader, "links", []))
                         outgoing_links = list(getattr(out_shader, "links", []))
                         from_socket = incoming_links[0].from_socket
 
-                        nodes.remove(attr_node)
-                        nodes.remove(node)
+                        to_remove.append(attr_node)
+                        to_remove.append(node)
                         for link in outgoing_links:
                             try:
                                 links.new(from_socket, link.to_socket)
                             except Exception:
                                 pass
+            for node in to_remove:
+                nodes.remove(node)
 
-
-        mat = obj.active_material
+        mat = getattr(obj, 'active_material', None)
         shader_attr = getattr(gn_mod.properties.inputs, SHADER_MASK).value
         if mat and shader_attr:
             _remove_shader_nodes(mat, shader_attr)
