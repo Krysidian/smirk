@@ -1,6 +1,7 @@
 import bpy
 from pathlib import Path
 from bpy.app.handlers import persistent
+from .custom_icons import *
 
 ASSET_FILENAME = "smirk_assets.blend"
 
@@ -27,6 +28,8 @@ CUTTER_RIM_MAT = 'Socket_25'
 MAIN_SEP_FACTOR = 0.2
 
 SHRINKWRAP_NAME = 'SMIRK Shrinkwrap'
+
+TESTICON = get_icon('smirk_icon')
 
 
 def get_smirk_obj_and_modifier(context):
