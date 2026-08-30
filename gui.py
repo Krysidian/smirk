@@ -421,7 +421,8 @@ class SMIRK_PT_menu(bpy.types.Panel):
                                 dep_cycle = True
                         except:
                             continue
-        
+
+            # Add Mask Prop
             layout.separator(type='SPACE',factor=MAIN_SEP_FACTOR)
             if cutter_obj.type == 'MESH':
                 op_icon = 'GROUP_VERTEX'
@@ -444,6 +445,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
                 row = body.row()
                 row.alignment = 'CENTER'
                 row.label(text=f'{cutter_obj.name}')
+                body.separator(type='LINE')
                 
                 
                 
@@ -478,12 +480,28 @@ class SMIRK_PT_menu(bpy.types.Panel):
                     op.cutter_name = cutter_name
 
                 # Show Shrinkwrap Add button if it doesn't exist yet
-                if not bool(cutter_obj.modifiers.get(SHRINKWRAP_NAME)):
+                shrink_mod = cutter_obj.modifiers.get(SHRINKWRAP_NAME)
+                if not shrink_mod:
                     row = body.row()
                     row.enabled = not bool(cutter_obj.modifiers.get(SHRINKWRAP_NAME))
                     op = row.operator("smirk.add_shrinkwrap", icon='MOD_SHRINKWRAP')
                     op.proxy_name = f'PROXY-{obj.name}'
                     op.cutter_name = cutter_obj.name
+                elif shrink_mod:
+                    old_body = body # cache body
+                    header, body = body.panel(idname='smirk_shrinkwrap', default_closed=True)
+                    header.label(text='Shrinkwrap', icon='MOD_SHRINKWRAP')
+                    op = header.operator('smirk.modifier_remove', text ='', icon='X', emboss=False)
+                    op.object = cutter_obj.name
+                    op.modifier = SHRINKWRAP_NAME
+                    if body:
+                        row = body.row()
+                        op = row.prop(shrink_mod, "wrap_method")
+                        row = body.row()
+                        op = row.prop(shrink_mod, "wrap_mode")
+                        row = body.row()
+                        op = row.prop(shrink_mod, "offset")
+                    body = old_body # reinstate previous body
 
                 # Show Make Cutter Invisible option if cutter object is Grease Pencil
                 if cutter_obj.type == 'GREASEPENCIL' and cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL):
@@ -493,7 +511,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
                     op = row.operator('smirk.toggle_gp_cutter_visibility', text='Make Cutter Invisible', depress = True if cutter_mod.show_viewport == True else False, icon='HIDE_ON' if cutter_mod.show_viewport == True else 'HIDE_OFF')
                     op.object_name = cutter_obj.name
 
-                body.separator(type='SPACE')
+                body.separator(type='LINE')
                 row = body.row()
                 op = row.operator("smirk.edit_cutter_obj", icon=obj_icon)
                 op.object_name = obj.name
