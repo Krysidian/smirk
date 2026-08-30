@@ -474,7 +474,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
                 elif cutter_obj.type == 'MESH':
                     cutter_mask_exists = bool(cutter_obj.vertex_groups.get(cutter_name))
 
-                if not cutter_mask_exists:
+                if not cutter_mask_exists or not cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL):
                     op = body.operator("smirk.add_cutter_mask", icon=op_icon, text=op_text)
                     op.object_name = cutter_obj.name
                     op.cutter_name = cutter_name
@@ -487,6 +487,8 @@ class SMIRK_PT_menu(bpy.types.Panel):
                     op = row.operator("smirk.add_shrinkwrap", icon='MOD_SHRINKWRAP')
                     op.proxy_name = f'PROXY-{obj.name}'
                     op.cutter_name = cutter_obj.name
+
+                # Shrinkwrap Panel
                 elif shrink_mod:
                     old_body = body # cache body
                     header, body = body.panel(idname='smirk_shrinkwrap', default_closed=True)
@@ -502,6 +504,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
                         row = body.row()
                         op = row.prop(shrink_mod, "offset")
                     body = old_body # reinstate previous body
+                    body.separator(type='LINE')
 
                 # Show Make Cutter Invisible option if cutter object is Grease Pencil
                 if cutter_obj.type == 'GREASEPENCIL' and cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL):
@@ -511,7 +514,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
                     op = row.operator('smirk.toggle_gp_cutter_visibility', text='Make Cutter Invisible', depress = True if cutter_mod.show_viewport == True else False, icon='HIDE_ON' if cutter_mod.show_viewport == True else 'HIDE_OFF')
                     op.object_name = cutter_obj.name
 
-                body.separator(type='LINE')
+                
                 row = body.row()
                 op = row.operator("smirk.edit_cutter_obj", icon=obj_icon)
                 op.object_name = obj.name
