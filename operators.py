@@ -29,7 +29,7 @@ MAIN_SEP_FACTOR = 0.2
 
 SHRINKWRAP_NAME = 'SMIRK Shrinkwrap'
 
-TESTICON = get_icon('smirk_icon')
+
 
 
 def get_smirk_obj_and_modifier(context):

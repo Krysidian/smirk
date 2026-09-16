@@ -211,13 +211,14 @@ class SMIRK_OT_pin_object(bpy.types.Operator):
 
 class SMIRK_PT_menu(bpy.types.Panel):
     """Creates a Panel in the Object properties window"""
+
+    
     bl_label = "Freeform Facial Features"
     bl_idname = "SMIRK_PT_menu"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = 'SMIRK'
-    bl_icon = 'NONE'
-
+    bl_icon_value = 0
 
     def draw(self, context):
         scene = context.scene
@@ -852,6 +853,7 @@ _classes = (
 _register, _unregister = bpy.utils.register_classes_factory(_classes)
 
 def register() -> None:
+    SMIRK_PT_menu.bl_icon_value = get_icon('smirk_icon')
     _register()
     bpy.types.VIEW3D_MT_object.append(draw_menu)
 
@@ -861,11 +863,11 @@ def register() -> None:
     bpy.types.WindowManager.smirk_pin = bpy.props.PointerProperty(type=SMIRK_pin)
 
     bpy.types.Scene.smirk_sync_props = bpy.props.PointerProperty(type=SMIRK_sync_props,options={'SKIP_SAVE'})
-    
+
+
     
 def unregister() -> None:
     _unregister()
-    bpy.types.VIEW3D_MT_object.remove(draw_menu)
 
     del bpy.types.WindowManager.smirk_panels
     del bpy.types.WindowManager.smirk_mod_list
