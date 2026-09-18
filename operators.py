@@ -883,6 +883,11 @@ class SMIRK_OT_modifier_add(bpy.types.Operator):
         
         obj = bpy.data.objects.get(self.object_name) if self.object_name else context.active_object
 
+
+        # Reset cached mask and cutter
+        obj["_smirk_last_mask"] = ""
+        obj["_smirk_last_cutter"] = ""
+
         if not self.modifier_name:
             self.report({'ERROR'}, f"Modifier field must be filled")
             return {"FINISHED"}
