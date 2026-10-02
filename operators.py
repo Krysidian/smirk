@@ -883,6 +883,8 @@ class SMIRK_OT_modifier_add(bpy.types.Operator):
         
         obj = bpy.data.objects.get(self.object_name) if self.object_name else context.active_object
 
+        # Set SMIRK Version on Object
+        obj.smirk.smirk_version = 1.0
 
         # Reset cached mask and cutter
         obj["_smirk_last_mask"] = ""
@@ -1018,7 +1020,11 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
         # Shrinkwrap
         if cutter_obj:
             shrinkwrap = cutter_obj.modifiers.get(SHRINKWRAP_NAME) or None
-        
+
+
+        # Delete Properties
+        del obj["_smirk_last_mask"]
+        del obj["_smirk_last_cutter"] 
 
         # Remove Cutter Mask
         def _remove_cutter_mask(mod, obj):

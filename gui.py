@@ -228,6 +228,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
         layout = self.layout
         layout.use_property_split = True
 
+
         panel_icons = {
             "Cutter": 'scissors',
             "Extractor": "EYEDROPPER",

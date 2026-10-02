@@ -14,21 +14,24 @@
 
 _needs_reload = 'gui' in locals()
 
-from . import operators, gui
+from . import operators, gui, properties
 from .custom_icons import load_icons, unload_icons
 
 if _needs_reload:
     import importlib
 
+    properties = importlib.reload(properties)
     operators = importlib.reload(operators)
     gui = importlib.reload(gui)
 
 def register():
     custom_icons.register()
+    properties.register()
     gui.register()
     operators.register()
 
 def unregister():
     custom_icons.unregister()
+    properties.unregister()
     gui.unregister()
     operators.unregister()
