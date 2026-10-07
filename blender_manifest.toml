@@ -9,7 +9,7 @@ type = "add-on"
 
 website = "https://github.com/Krysidian/smirk"
 
-tags = ["Animation", "Rigging", "Grease Pencil"]
+tags = ["Animation", "Geometry Nodes", "Grease Pencil"]
 
 blender_version_min = "5.2.0"
 
