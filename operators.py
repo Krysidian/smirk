@@ -863,7 +863,7 @@ class SMIRK_OT_modifier_add(bpy.types.Operator):
 
         
         row = box.split(factor=split_factor)
-        row.label(text='Mask')
+        row.label(text='Cutter Mask')
         row.prop(self, "mask_name", text='')
 
         row = box.split(factor=split_factor)
