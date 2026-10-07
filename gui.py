@@ -432,8 +432,11 @@ class SMIRK_PT_menu(bpy.types.Panel):
                 obj_icon = 'OBJECT_DATA'
             elif cutter_obj.type == 'GREASEPENCIL':
                 op_icon = 'GREASEPENCIL_LAYER_GROUP'
-                op_text= 'Add SMIRK Cutter GP Layer'
                 obj_icon = 'OUTLINER_OB_GREASEPENCIL'
+                if not cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL):
+                    op_text= 'Add Override Layer Material'
+                else:
+                    op_text= 'Add SMIRK Cutter GP Layer'
             else:
                 op_icon = 'ERROR'
                 obj_icon = 'ERROR'
