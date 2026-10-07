@@ -1058,6 +1058,8 @@ class SMIRK_OT_setup_remove(bpy.types.Operator):
                 cutter_obj.modifiers.remove(shrinkwrap)
             for m in mods:
                 if m.type == 'NODES':
+                    if not m.node_group:
+                        continue
                     if m.node_group.name != OVERRIDE_LAYER_MATERIAL:
                         continue
                     cutter_obj.modifiers.remove(m)
