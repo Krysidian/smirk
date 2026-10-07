@@ -480,7 +480,9 @@ class SMIRK_PT_menu(bpy.types.Panel):
                     cutter_mask_exists = bool(cutter_obj.vertex_groups.get(cutter_name))
 
                 if not cutter_mask_exists or not cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL):
-                    op = body.operator("smirk.add_cutter_mask", icon=op_icon, text=op_text)
+                    setup_body = body.box()
+                    setup_body.label(text= "Setup")
+                    op = setup_body.operator("smirk.add_cutter_mask", icon=op_icon, text=op_text)
                     op.object_name = cutter_obj.name
                     op.cutter_name = cutter_name
 
