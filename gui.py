@@ -424,6 +424,15 @@ class SMIRK_PT_menu(bpy.types.Panel):
                         except:
                             continue
 
+
+            # Check Existence of Cutter Mask
+            cutter_name = getattr(gn_mod.properties.inputs, CUTTER_MASK).value                
+            cutter_mask_exists = False
+            if cutter_obj.type == 'GREASEPENCIL':
+                cutter_mask_exists = bool(cutter_obj.data.layers.get(cutter_name))
+            elif cutter_obj.type == 'MESH':
+                cutter_mask_exists = bool(cutter_obj.vertex_groups.get(cutter_name))   
+
             # Add Mask Prop
             layout.separator(type='SPACE',factor=MAIN_SEP_FACTOR)
             if cutter_obj.type == 'MESH':
@@ -433,7 +442,7 @@ class SMIRK_PT_menu(bpy.types.Panel):
             elif cutter_obj.type == 'GREASEPENCIL':
                 op_icon = 'GREASEPENCIL_LAYER_GROUP'
                 obj_icon = 'OUTLINER_OB_GREASEPENCIL'
-                if not cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL):
+                if not cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL) and cutter_mask_exists:
                     op_text= 'Add Override Layer Material'
                 else:
                     op_text= 'Add SMIRK Cutter GP Layer'
@@ -470,18 +479,14 @@ class SMIRK_PT_menu(bpy.types.Panel):
 
                     body.separator(factor=1.0)
 
-                cutter_name = getattr(gn_mod.properties.inputs, CUTTER_MASK).value
+                
 
+                
+                
                 # Show add Cutter Mask button if it hasn't been added yet
-                cutter_mask_exists = False
-                if cutter_obj.type == 'GREASEPENCIL':
-                    cutter_mask_exists = bool(cutter_obj.data.layers.get(cutter_name))
-                elif cutter_obj.type == 'MESH':
-                    cutter_mask_exists = bool(cutter_obj.vertex_groups.get(cutter_name))
-
                 if not cutter_mask_exists or not cutter_obj.modifiers.get(OVERRIDE_LAYER_MATERIAL):
                     setup_body = body.box()
-                    setup_body.label(text= "Setup")
+                    setup_body.label(text= "Setup Cutter Mask")
                     op = setup_body.operator("smirk.add_cutter_mask", icon=op_icon, text=op_text)
                     op.object_name = cutter_obj.name
                     op.cutter_name = cutter_name
