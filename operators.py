@@ -1137,7 +1137,7 @@ class SMIRK_OT_switch_tab(bpy.types.Operator):
 class SMIRK_OT_add_cutter_mask(bpy.types.Operator):
     bl_idname = "smirk.add_cutter_mask"
     bl_label = "Add Smirk Cutter Vertex Group or GP Layer"
-    bl_description = "Automatically creates a Vertex Group or Grease Pencil Layer corresponding to the Mask attribute"
+    bl_description = "Automatically creates a Vertex Group or Grease Pencil Layer corresponding to the Mask attribute. Additionally adds a \"Override Layer Material\" modifier to the cutter object"
     bl_options = {'UNDO'}
     object_name: bpy.props.StringProperty(name='Target Object', default='')
     cutter_name: bpy.props.StringProperty(name='Target Object', default='')
