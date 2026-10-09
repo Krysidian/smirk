@@ -1,9 +1,7 @@
 # SMIRK - Freeform Facial Features
 ---
+https://github.com/user-attachments/assets/10f9663b-4e68-4994-bae1-f1d43b5a1ef8
 ## What is SMIRK?
-
-https://github.com/user-attachments/assets/282fea51-0315-4a87-88ad-aec65e65bd70
-
 SMIRK is a system designed to help with stylized facial features like mouths and openings in general. 
 It can be used for eyes and more as well.
 
