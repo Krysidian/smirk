@@ -2,6 +2,7 @@
 ---
 https://github.com/user-attachments/assets/10f9663b-4e68-4994-bae1-f1d43b5a1ef8
 ## What is SMIRK?
+
 SMIRK is a system designed to help with stylized facial features like mouths and openings in general. 
 It can be used for eyes and more as well.
 
@@ -10,14 +11,17 @@ This can be an edge loop on a mouth mesh, a simple mesh ribbon or even Grease Pe
 
 Many might know this as the *"Boolean Mouth"* but **SMIRK** comes with a subset of methods to approach the cutting process to enable maximum flexibility and performance in a production environment.
 ## Installation
+
 You can install directly within Blender, by searching for SMIRK inside the "Get Extensions" panel.
 
 You can also manually install it by going to the Releases panel here on the right and downloading the newest Zip File. This can be drag and dropped into Blender to be installed.
 ## What it isn't
+
 - SMIRK is not an auto-rigger and does not generate any armatures to make facial features animatable. This might change in the future when the scope of this addon changes.
 - SMIRK does not generate entire facial features. It does come with some mesh generation like the Rim and Inner Area which might be expanded on in the future.
 - SMIRK cannot be exported to game engines as it makes use of Blender's shaders and Geometry Nodes. Though a similar approach could possibly be recreated in a game engine.
 ## Getting Started
+
 <details>
   <summary>Quick Setup</summary>
   
@@ -35,11 +39,12 @@ You can also manually install it by going to the Releases panel here on the righ
 </details>
 
 ## Wasn't This Released Before?
----
+
 The SMIRK addon is an extension to the Geometry Nodes toolset I made a year ago with the same name. 
 
 This addon wraps these Geometry Node tools into a Blender extension that helps set up and adjust the Freeform Facial Feature workflow easily.
 ## Documentation
+
 More thorough documentation will follow soon, for now you can learn about the general concepts using some older videos I have made here:
 
 [Detached Facial Features in Blender](https://www.youtube.com/watch?v=RLNl8FHurM0)
