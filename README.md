@@ -6,7 +6,7 @@ https://github.com/user-attachments/assets/10f9663b-4e68-4994-bae1-f1d43b5a1ef8
 SMIRK is a system designed to help with stylized facial features like mouths and openings in general. 
 It can be used for eyes and more as well.
 
-At it's core it's a set of tools that allows the user to cut a hole into the mesh using a circular base.
+At its core it's a set of tools that allows the user to cut a hole into the mesh using a circular base.
 This can be an edge loop on a mouth mesh, a simple mesh ribbon or even Grease Pencil
 
 Many might know this as the *"Boolean Mouth"* but **SMIRK** comes with a subset of methods to approach the cutting process to enable maximum flexibility and performance in a production environment.
