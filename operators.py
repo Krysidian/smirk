@@ -945,8 +945,8 @@ class SMIRK_OT_modifier_add(bpy.types.Operator):
         shader_mask = getattr(smirk_mod.properties.inputs, SHADER_MASK).value
         )
             
-            
-        _switch_properties_to_modifier_tab()
+        # Toggled off for now as the sidepanel perfectly mirrors the modifier properties now    
+        #_switch_properties_to_modifier_tab()
 
 
         return {"FINISHED"}
