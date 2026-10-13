@@ -21,7 +21,6 @@ copyright = [
 ]
 
 [permissions]
-network = "Need to sync motion-capture data to server"
 files = "Import node groups from blend files/Import icon files from disk"
 
 
