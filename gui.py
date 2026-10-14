@@ -6,7 +6,7 @@ from .custom_icons import *
 
 from bpy.types import Context
 
-# Add Setup Proxy Operator to Object menu
+# Add Setup Proxy Operator to Object 
 def draw_menu(self, context) -> None:
     layout = self.layout
     layout.operator("smirk.setup_proxy_mesh", icon="DUPLICATE")
