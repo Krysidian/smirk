@@ -1,0 +1,4 @@
+mkdocs-material
+mkdocs-callouts
+mkdocs-glightbox
+selectolax<1.0
