@@ -11,9 +11,6 @@ theme:
    logo: custom/smirk
   favicon: assets/images/smirk.svg
   features:
-    - navigation.instant
-    - navigation.instant.prefetch
-    - navigation.instant.progress
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
@@ -76,6 +73,9 @@ extra:
       link: https://bsky.app/profile/krysidian.bsky.social
     - icon: simple/youtube
       link: https://www.youtube.com/@krysidian
+
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
   - pymdownx.emoji:
