@@ -1,5 +1,6 @@
 site_name: SMIRK - Freeform Facial Features
-site_url: https://sitename.example
+site_url: https://krysidian.github.io/smirk/
+repo_url: https://github.com/Krysidian/smirk
 theme:
   name: material
   custom_dir: overrides
@@ -9,6 +10,22 @@ theme:
   icon:
    logo: custom/smirk
   favicon: assets/images/smirk.svg
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - header.autohide
+    - navigation.footer
+    - content.tooltips
   palette:
     # Dark Mode
     - scheme: slate
@@ -26,6 +43,40 @@ theme:
       primary: black
       accent: teal
 
+plugins:
+  - search
+  - callouts:
+      aliases: true 
+      breakless_lists: true 
+      title_from_first_bold: false  
+  - glightbox:
+       touchNavigation: true
+       loop: false
+       effect: zoom
+       slide_effect: slide
+       width: 100%
+       height: auto
+       zoomable: true
+       draggable: true
+       skip_classes:
+         - custom-skip-class-name
+       auto_themed: false
+       auto_caption: false
+       caption_position: bottom
+       background: white
+       shadow: true
+       manual: false
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/twitter
+      link: https://x.com/krysidian
+    - icon: simple/bluesky
+      link: https://bsky.app/profile/krysidian.bsky.social
+    - icon: simple/youtube
+      link: https://www.youtube.com/@krysidian
+
 markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
@@ -37,8 +88,16 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+  - admonition
+  - pymdownx.details
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  - toc:
+      permalink: true
+      title: Table of contents
