@@ -99,5 +99,5 @@ markdown_extensions:
   - md_in_html
   - pymdownx.blocks.caption
   - toc:
-      permalink: true
+      permalink: false
       title: Table of contents
