@@ -1,0 +1,17 @@
+:root {
+  --md-admonition-icon--smirk: url("/smirk/assets/images/smirk.svg");
+}
+.md-typeset .admonition.smirk,
+.md-typeset details.smirk {
+  border-color: rgb(255, 255, 255);
+}
+.md-typeset .smirk > .admonition-title,
+.md-typeset .smirk > summary {
+  background-color: rgba(152, 152, 152, 0.1);
+}
+.md-typeset .smirk > .admonition-title::before,
+.md-typeset .smirk > summary::before {
+  background-color: rgb(255, 255, 255);
+  -webkit-mask-image: var(--md-admonition-icon--smirk);
+          mask-image: var(--md-admonition-icon--smirk);
+}
