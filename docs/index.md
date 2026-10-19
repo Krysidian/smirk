@@ -1,7 +1,8 @@
 # Introduction to SMIRK
 
-
 Get SMIRK [here](https://extensions.blender.org/add-ons/smirk/) or download it directly from within Blender by searching for it in the Extensions Tab in Preferences.
+
+[GET SMIRK HERE](https://extensions.blender.org/add-ons/smirk/){ .md-button target="_blank" .md-button .md-button--primary .button-center} [GET SMIRK HERE](https://extensions.blender.org/add-ons/smirk/){ .md-button target="_blank" .md-button .md-button--primary .button-center}
 
 ## What is it?
 
@@ -20,50 +21,35 @@ You can install directly within Blender, by searching for SMIRK inside the "Get 
 You can also manually install it by going to the Releases panel here on the right and downloading the newest Zip File. This can be drag and dropped into Blender to be installed.
 
 
-??? smirk "test"
-	test
-
-
 ---
 ## Core Concepts
 
-<div class="grid cards" markdown>
+???+ smirk "What SMIRK is made of"
+	<div class="grid cards" markdown>
 
-- :custom-surface: **Surface Object**
+	- ### :custom-surface: **[Surface Object](surface-object.md#surface-object){ data-preview }**
+	
+		 ---
+		 ![emma](assets/images/emma.gif)
+		 
+	- ### :fontawesome-solid-scissors: **[Cutter](cutter.md#cutter){ data-preview }**
+	
+		 ---
+		  ![boolean](assets/images/boolean-vis.gif)
+		  
+	- ### :material-transition-masked: **[Mask](mask.md#mask){ data-preview }**
+	
+		 ---
+		  ![cassidy](assets/images/cassidy.gif)
+		 
+	- ### :custom-modifier: **[Modifiers](modifiers.md#modifiers){ data-preview }**
+	
+		 ---
+		  ![dinara](assets/images/dinara.gif)
+	
+	</div>
 
-	 ---
-	 ![emma](assets/images/emma.gif)
-	 
-	??? info "Placholder"
-		Placeholder
-
-
-	 
-- :fontawesome-solid-scissors: **Cutter**
-
-	 ---
-	  ![boolean](assets/images/boolean-vis.gif)
-	  
-	??? info "Placholder"
-		Placeholder
-	  
-- :material-transition-masked: **Mask**
-
-	 ---
-	  ![cassidy](assets/images/cassidy.gif)
-	  
-	??? info "Placholder"
-		Placeholder
-	 
-- :custom-modifier: **Modifier**
-
-	 ---
-	  ![dinara](assets/images/dinara.gif)
-	  
-	??? info "Placholder"
-		Placeholder
-
-</div>
+### [Freeform Facial Features](freeform-facial-features.md#freeform-facial-features)
  ---
 
 ## What it isn't
@@ -91,4 +77,10 @@ The SMIRK addon is an extension to the Geometry Nodes toolset I made a year ago 
 This addon wraps these Geometry Node tools into a Blender extension that helps set up and adjust the Freeform Facial Feature workflow easily.
 
 
+=== "Test1"
+	my name jeff
 
+=== "Test2"
+	wer ist eigentlich Hajriz?
+
+	++ctrl+alt+del++

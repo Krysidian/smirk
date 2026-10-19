@@ -23,6 +23,8 @@ theme:
     - header.autohide
     - navigation.footer
     - content.tooltips
+    - navigation.instant
+    - navigation.instant.progress
   palette:
     # Dark Mode
     - scheme: slate
@@ -101,3 +103,8 @@ markdown_extensions:
   - toc:
       permalink: false
       title: Table of contents
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde

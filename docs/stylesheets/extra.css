@@ -3,15 +3,28 @@
 }
 .md-typeset .admonition.smirk,
 .md-typeset details.smirk {
-  border-color: rgb(255, 255, 255);
+  border-color: rgba(206, 255, 233, 0.676);
 }
 .md-typeset .smirk > .admonition-title,
 .md-typeset .smirk > summary {
-  background-color: rgba(152, 152, 152, 0.1);
+  background-color: rgba(78, 87, 83, 0.1);
 }
 .md-typeset .smirk > .admonition-title::before,
 .md-typeset .smirk > summary::before {
   background-color: rgb(255, 255, 255);
   -webkit-mask-image: var(--md-admonition-icon--smirk);
           mask-image: var(--md-admonition-icon--smirk);
+}
+
+.md-typeset a.button-center {
+  display: block;
+  width: fit-content;
+  margin: 0.5rem;
+}
+
+p:has(> a.button-center) {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
 }
