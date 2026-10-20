@@ -24,32 +24,34 @@ You can also manually install it by going to the Releases panel here on the righ
 ---
 ## Core Concepts
 
+### [Freeform Facial Features](core-concepts/freeform-facial-features.md#freeform-facial-features){ data-preview }
+
 ???+ smirk "What SMIRK is made of"
 	<div class="grid cards" markdown>
 
-	- ### :custom-surface: **[Surface Object](surface-object.md#surface-object){ data-preview }**
+	- ### :custom-surface: **[Surface Object](core-concepts/surface-object.md#surface-object){ data-preview }**
 	
 		 ---
 		 ![emma](assets/images/emma.gif)
 		 
-	- ### :fontawesome-solid-scissors: **[Cutter](cutter.md#cutter){ data-preview }**
+	- ### :fontawesome-solid-scissors: **[Cutter](core-concepts/cutter.md#cutter){ data-preview }**
 	
 		 ---
 		  ![boolean](assets/images/boolean-vis.gif)
 		  
-	- ### :material-transition-masked: **[Mask](mask.md#mask){ data-preview }**
+	- ### :material-transition-masked: **[Mask](core-concepts/mask.md#mask){ data-preview }**
 	
 		 ---
 		  ![cassidy](assets/images/cassidy.gif)
 		 
-	- ### :custom-modifier: **[Modifiers](modifiers.md#modifiers){ data-preview }**
+	- ### :custom-modifier: **[Modifier](core-concepts/modifier.md#modifier){ data-preview }**
 	
 		 ---
 		  ![dinara](assets/images/dinara.gif)
 	
 	</div>
 
-### [Freeform Facial Features](freeform-facial-features.md#freeform-facial-features)
+
  ---
 
 ## What it isn't

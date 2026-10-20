@@ -25,6 +25,7 @@ theme:
     - content.tooltips
     - navigation.instant
     - navigation.instant.progress
+    - navigation.indexes 
   palette:
     # Dark Mode
     - scheme: slate
@@ -108,3 +109,15 @@ markdown_extensions:
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.tilde
+
+nav:
+  - Home: index.md
+  - Core Concepts:
+    - core-concepts/index.md
+    - Freeform Facial Features: core-concepts/freeform-facial-features.md
+    - Surface Object: core-concepts/surface-object.md
+    - Cutter: core-concepts/cutter.md
+    - Mask: core-concepts/mask.md
+    - Modifier: core-concepts/modifier.md
+  - Nodes:
+    - nodes/index.md
