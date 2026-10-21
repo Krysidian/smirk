@@ -78,11 +78,3 @@ The SMIRK addon is an extension to the Geometry Nodes toolset I made a year ago 
 
 This addon wraps these Geometry Node tools into a Blender extension that helps set up and adjust the Freeform Facial Feature workflow easily.
 
-
-=== "Test1"
-	my name jeff
-
-=== "Test2"
-	wer ist eigentlich Hajriz?
-
-	++ctrl+alt+del++

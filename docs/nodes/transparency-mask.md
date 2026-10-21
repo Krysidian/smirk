@@ -1,0 +1,5 @@
+# Transparency Mask
+
+## Inputs
+
+## Outputs

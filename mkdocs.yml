@@ -33,7 +33,7 @@ theme:
         icon: material/weather-sunny
         name: Dark mode
       primary: black
-      accent: teal
+      accent: yellow
 
     # Light Mode
     - scheme: default
@@ -41,7 +41,7 @@ theme:
         icon: material/weather-night
         name: Light mode
       primary: black
-      accent: teal
+      accent: yellow
 
 plugins:
   - search
@@ -109,9 +109,15 @@ markdown_extensions:
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.tilde
+  - def_list
 
 nav:
   - Home: index.md
+  - Setup:
+    - setup/index.md
+    - setup/detached-facial-features.md
+    - setup/grease-pencil-features.md
+    - setup/ribbon-features.md
   - Core Concepts:
     - core-concepts/index.md
     - Freeform Facial Features: core-concepts/freeform-facial-features.md
@@ -121,3 +127,12 @@ nav:
     - Modifier: core-concepts/modifier.md
   - Nodes:
     - nodes/index.md
+    - Geometry Nodes:
+      - SMIRK Modifier: nodes/smirk-mod.md
+      - Override Layer Material: nodes/override-layer-material.md
+    - Shader Nodes:
+      - Transparency Mask: nodes/transparency-mask.md
+    - Coming Soon:
+      - SMIRK Meld: nodes/smirk-meld.md
+      - Surface Deform Shrinkwrap: nodes/surface-deform-shrinkwrap.md
+  - Support: support.md

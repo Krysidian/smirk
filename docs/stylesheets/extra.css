@@ -16,6 +16,13 @@
           mask-image: var(--md-admonition-icon--smirk);
 }
 
+
+[data-md-color-scheme="smirk"] {
+  --md-primary-fg-color:        #EE0F0F;
+  --md-primary-fg-color--light: #ECB7B7;
+  --md-primary-fg-color--dark:  #90030C;
+}
+
 .md-typeset a.button-center {
   display: block;
   width: fit-content;
@@ -28,3 +35,18 @@ p:has(> a.button-center) {
   flex-wrap: wrap;
   margin: 0 auto;
 }
+
+.md-tabs__item:first-child {
+  font-weight: bold;
+}
+
+.md-tabs__item > .md-tabs__link[href*="support/"] {
+  color: #f96854;
+  font-weight: bold;
+}
+
+
+/* .md-tabs__item:has(> .md-tabs__link[href*="support/"]) {
+  background-color: #052d49;
+  border-radius: 3px;
+} */
