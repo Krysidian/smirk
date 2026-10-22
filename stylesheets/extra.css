@@ -1,0 +1,52 @@
+:root {
+  --md-admonition-icon--smirk: url("/smirk/assets/images/smirk.svg");
+}
+.md-typeset .admonition.smirk,
+.md-typeset details.smirk {
+  border-color: rgba(206, 255, 233, 0.676);
+}
+.md-typeset .smirk > .admonition-title,
+.md-typeset .smirk > summary {
+  background-color: rgba(78, 87, 83, 0.1);
+}
+.md-typeset .smirk > .admonition-title::before,
+.md-typeset .smirk > summary::before {
+  background-color: rgb(255, 255, 255);
+  -webkit-mask-image: var(--md-admonition-icon--smirk);
+          mask-image: var(--md-admonition-icon--smirk);
+}
+
+
+[data-md-color-scheme="smirk"] {
+  --md-primary-fg-color:        #EE0F0F;
+  --md-primary-fg-color--light: #ECB7B7;
+  --md-primary-fg-color--dark:  #90030C;
+}
+
+.md-typeset a.button-center {
+  display: block;
+  width: fit-content;
+  margin: 0.5rem;
+}
+
+p:has(> a.button-center) {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.md-tabs__item:first-child {
+  font-weight: bold;
+}
+
+.md-tabs__item > .md-tabs__link[href*="support/"] {
+  color: #f96854;
+  font-weight: bold;
+}
+
+
+/* .md-tabs__item:has(> .md-tabs__link[href*="support/"]) {
+  background-color: #052d49;
+  border-radius: 3px;
+} */
