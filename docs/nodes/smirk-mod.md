@@ -1,5 +1,7 @@
+---
+icon: custom/modifier
+---
 # SMIRK Modifier
-
 ## Inputs
 
 ##### Mode

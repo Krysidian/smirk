@@ -1,5 +1,13 @@
+---
+icon: custom/modifier
+---
+
 # Override Layer Material
 
 ## Inputs
 
-## Outputs
+##### Layer
+##### Material
+##### Color
+##### Opacity
+##### Radius

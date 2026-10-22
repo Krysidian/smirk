@@ -1,3 +1,7 @@
+---
+icon: custom/modifier
+---
+
 # SMIRK Meld
 
 ## Inputs
