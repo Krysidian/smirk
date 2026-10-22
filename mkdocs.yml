@@ -8,7 +8,7 @@ theme:
     text: Roboto
     code: Roboto Mono
   icon:
-   logo: custom/smirk
+   logo: custom/smirk-big
   favicon: assets/images/smirk.svg
   features:
     - navigation.tabs
@@ -45,6 +45,7 @@ theme:
 
 plugins:
   - search
+  #- typeset
   - callouts:
       aliases: true 
       breakless_lists: true 
