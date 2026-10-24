@@ -1,5 +1,7 @@
 # Core Concepts
 
+Since SMIRK is still a more intermediate, manual tool and in order to make it's features more digestible I decided to make a little "glossary" explaining the core features and ideas of the addon.
+
 ## [Freeform Facial Features](freeform-facial-features.md#freeform-facial-features){ data-preview }
 ---
 

@@ -4,6 +4,7 @@ vscode
 *.code-workspace
 .vscode/
 .obsidian/
+changelog.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
