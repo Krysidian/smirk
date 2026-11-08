@@ -39,7 +39,7 @@ You can also manually install it by going to the Releases panel here on the righ
 		 ---
 		  ![boolean](assets/images/boolean-vis.gif)
 		  
-	- ### :material-transition-masked: **[Mask](core-concepts/mask.md#mask){ data-preview }**
+	- ### :material-transition-masked: **[Mask](core-concepts/mask.md#cutter-mask){ data-preview }**
 	
 		 ---
 		  ![cassidy](assets/images/cassidy.gif)

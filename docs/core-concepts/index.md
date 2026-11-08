@@ -17,7 +17,7 @@ Since SMIRK is still a more intermediate, manual tool and in order to make it's 
 	 ---
 	  ![boolean](../assets/images/boolean-vis.gif)
 	  
-- ## :material-transition-masked: **[Mask](mask.md#mask){ data-preview }**
+- ## :material-transition-masked: **[Mask](mask.md#cutter-mask){ data-preview }**
 
 	 ---
 	  ![cassidy](../assets/images/cassidy.gif)
