@@ -119,7 +119,8 @@ class SMIRK_sync_props(bpy.types.PropertyGroup):
 
 
 
-
+class SMIRK_modifier_item(bpy.types.PropertyGroup):
+    name: bpy.props.StringProperty()
 
 class SMIRK_panels(bpy.types.PropertyGroup):
     persistent_uid: bpy.props.IntProperty()
@@ -853,6 +854,7 @@ def draw_modifier_panel(obj, gn_mod, wm, layout, panel_icons, socket_icons):
 
 
 _classes = (
+    SMIRK_modifier_item,
     SMIRK_PT_menu,
     SMIRK_panels,
     SMIRK_UL_modifiers,
@@ -870,7 +872,7 @@ def register() -> None:
     bpy.types.VIEW3D_MT_object.append(draw_menu)
 
     bpy.types.WindowManager.smirk_panels = bpy.props.CollectionProperty(type=SMIRK_panels)
-    bpy.types.WindowManager.smirk_mod_list = bpy.props.CollectionProperty(type=bpy.types.PropertyGroup)
+    bpy.types.WindowManager.smirk_mod_list = bpy.props.CollectionProperty(type=SMIRK_modifier_item)
     bpy.types.WindowManager.smirk_mod_active = bpy.props.IntProperty()
     bpy.types.WindowManager.smirk_pin = bpy.props.PointerProperty(type=SMIRK_pin)
 
